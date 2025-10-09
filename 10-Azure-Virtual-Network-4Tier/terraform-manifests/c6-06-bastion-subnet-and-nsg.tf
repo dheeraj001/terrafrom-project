@@ -12,9 +12,9 @@ resource "azurerm_network_security_group" "bastion_subnet_nsg" {
 }
 
 resource "azurerm_subnet_network_security_group_association" "bastion_nsg_association" {
-  depends_on = [ azurerm_network_security_rule.bastion_nsg_rule_inbound ]  
-  subnet_id                 = azurerm_subnet.bastion_subnet.id 
-  network_security_group_id = azurerm_network_security_group.bastion_subnet_nsg.id    
+  depends_on                = [azurerm_network_security_rule.bastion_nsg_rule_inbound]
+  subnet_id                 = azurerm_subnet.bastion_subnet.id
+  network_security_group_id = azurerm_network_security_group.bastion_subnet_nsg.id
 }
 
 locals {
@@ -25,7 +25,7 @@ locals {
 }
 
 resource "azurerm_network_security_rule" "bastion_nsg_rule_inbound" {
-  for_each =   local.app_inbound_port_map
+  for_each                    = local.bastion_inbound_port_map
   name                        = "Rule-Port${each.value}"
   priority                    = each.key
   direction                   = "Inbound"
@@ -36,6 +36,6 @@ resource "azurerm_network_security_rule" "bastion_nsg_rule_inbound" {
   source_address_prefix       = "*"
   destination_address_prefix  = "*"
   resource_group_name         = azurerm_resource_group.rg.name
-  network_security_group_name = azurerm_network_security_group.bastion_subnet_nsg.name   
-  
+  network_security_group_name = azurerm_network_security_group.bastion_subnet_nsg.name
+
 }

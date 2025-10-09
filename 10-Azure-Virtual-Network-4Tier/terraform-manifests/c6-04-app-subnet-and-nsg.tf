@@ -8,13 +8,13 @@ resource "azurerm_subnet" "appsubnet" {
 resource "azurerm_network_security_group" "app_subnet_nsg" {
   name                = "${azurerm_subnet.appsubnet.name}-nsg"
   location            = azurerm_resource_group.rg.location
-  resource_group_name = azurerm_resource_group.rg.name  
+  resource_group_name = azurerm_resource_group.rg.name
 }
 
 resource "azurerm_subnet_network_security_group_association" "app_nsg_subnet_association" {
-  depends_on = [ azurerm_network_security_rule.app_nsg_rule_inbound ]  
+  depends_on                = [azurerm_network_security_rule.app_nsg_rule_inbound]
   subnet_id                 = azurerm_subnet.appsubnet.id
-  network_security_group_id = azurerm_network_security_group.app_subnet_nsg.id 
+  network_security_group_id = azurerm_network_security_group.app_subnet_nsg.id
 }
 
 locals {
@@ -27,7 +27,7 @@ locals {
 }
 
 resource "azurerm_network_security_rule" "app_nsg_rule_inbound" {
-  for_each = local.app_inbound_port_map
+  for_each                    = local.app_inbound_port_map
   name                        = "Rule-port${each.value}"
   priority                    = each.key
   direction                   = "Inbound"
