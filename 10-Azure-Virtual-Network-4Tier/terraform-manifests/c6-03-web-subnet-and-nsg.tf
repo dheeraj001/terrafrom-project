@@ -31,7 +31,7 @@ resource "azurerm_network_security_rule" "web_nsg_rule_inbound" {
   for_each = local.web_inbound_port_map
   name =           "Rule-port${each.value}"
   priority                    =  each.key
-  direction                   = "Outbound"
+  direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"

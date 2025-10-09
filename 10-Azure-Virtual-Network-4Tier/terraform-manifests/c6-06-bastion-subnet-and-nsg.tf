@@ -28,7 +28,7 @@ resource "azurerm_network_security_rule" "bastion_nsg_rule_inbound" {
   for_each =   local.app_inbound_port_map
   name                        = "Rule-Port${each.value}"
   priority                    = each.key
-  direction                   = "Outbound"
+  direction                   = "Inbound"
   access                      = "Allow"
   protocol                    = "Tcp"
   source_port_range           = "*"
